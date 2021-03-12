@@ -1,6 +1,21 @@
 const tmi = require('tmi.js');
 const dotenv = require('dotenv');
 dotenv.config()
+const fs = require('fs')
+
+
+var copypastas = []
+try {
+  const data = fs.readFileSync('./copypasta.json')
+
+  const cp = JSON.parse(data);
+
+  for (let i in cp){
+    copypastas.push(cp[i].text)
+  }
+} catch (err){
+  console.log(`Error reading file: ${err}`);
+}
 
 // Define configuration options
 const opts = {
@@ -25,8 +40,8 @@ client.connect();
 
 // Called every time a message comes in
 function onMessageHandler (target, context, msg, self) {
-  if (self) { return; } // Ignore messages from the bot
-
+  if (self ) { return; } // Ignore messages from the bot
+  
   // Remove whitespace from chat message
   const commandName = msg.trim();
 
@@ -37,18 +52,38 @@ function onMessageHandler (target, context, msg, self) {
   else if (commandName === '@gladbot420') {
     dontAtMe(target, commandName);
   } 
+  else if (commandName === '!copypasta'){
+    copypasta(target, commandName)
+  }
   else {
     console.log(`* Unknown command ${commandName}`);
   }
 }
 
+/*
+Posts random copypasta
+*/
+function copypasta(target, commandName){
+  const rand = Math.floor(Math.random() * (copypastas.length));
+  var copypasta = copypastas[rand];
 
+  client.say(target, `${copypasta}`);
+
+  console.log(`* Executed ${commandName} command: Index ${rand}`);
+}
+
+/*
+Function called when someone @s gladbot
+*/
 function dontAtMe(target, commandName){
   var username = target.replace('#', '')
   client.say(target, `@${username} How dare you speak to me`);
-  console.log(`Spoke to ${username}`)
+  console.log(`* Executed ${commandName} command and Spoke to ${username}`)
 }
-// Function called when the "dice" command is issued
+
+/* 
+Function called when the "dice" command is issued
+*/
 function rollDice (target, commandName) {
   const sides = 20;
   var roll = Math.floor(Math.random() * sides) + 1;
