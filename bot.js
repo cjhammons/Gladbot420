@@ -54,10 +54,17 @@ function onMessageHandler (target, context, msg, self) {
   } 
   else if (commandName === '!copypasta'){
     copypasta(target, commandName)
+  } else if (commandName === '!sourcecode') {
+    code(target, commandName)
   }
   else {
     console.log(`* Unknown command ${commandName}`);
   }
+}
+
+function code(target, commandName){
+  client.say(target, 'You can see my source code here: https://github.com/cjhammons/Gladbot420')
+  console.log(`* Executed ${commandName} command`);
 }
 
 /*
