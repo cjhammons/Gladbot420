@@ -4,7 +4,9 @@
   "description": "A bot that I perform evil experiments on. It's basically my Frankenstein's monster. ",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node bot.js",
+    "build": "ng build",
+    "heroku-postbuild": "ng build --prod"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
