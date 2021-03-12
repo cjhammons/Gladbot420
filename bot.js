@@ -40,26 +40,31 @@ client.connect();
 
 // Called every time a message comes in
 function onMessageHandler (target, context, msg, self) {
-  if (self ) { return; } // Ignore messages from the bot
+  try {
+    if (self ) { return; } // Ignore messages from the bot
   
-  // Remove whitespace from chat message
-  const commandName = msg.trim();
+    // Remove whitespace from chat message
+    const commandName = msg.trim();
 
-  // If the command is known, let's execute it
-  if (commandName === '!d20') {
-    rollDice(target, commandName);
-  } 
-  else if (commandName === '@gladbot420') {
-    dontAtMe(target, commandName);
-  } 
-  else if (commandName === '!copypasta'){
-    copypasta(target, commandName)
-  } else if (commandName === '!sourcecode') {
-    code(target, commandName)
+    // If the command is known, let's execute it
+    if (commandName === '!d20') {
+      rollDice(target, commandName);
+    } 
+    else if (commandName === '@gladbot420') {
+      dontAtMe(target, commandName);
+    } 
+    else if (commandName === '!copypasta'){
+      copypasta(target, commandName)
+    } else if (commandName === '!sourcecode') {
+      code(target, commandName)
+    }
+    else {
+      console.log(`* Unknown command ${commandName}`);
+    }
+  } catch (err) {
+    console.log(`Error: ${err}`)
   }
-  else {
-    console.log(`* Unknown command ${commandName}`);
-  }
+  
 }
 
 function code(target, commandName){
