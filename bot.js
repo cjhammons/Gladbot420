@@ -35,13 +35,15 @@ function onMessageHandler (target, context, msg, self) {
     rollDice(target, commandName);
   } 
   else if (commandName === '@gladbot420') {
-    speak(target, commandName);
+    dontAtMe(target, commandName);
   } 
   else {
     console.log(`* Unknown command ${commandName}`);
   }
 }
-function speak(target, commandName){
+
+
+function dontAtMe(target, commandName){
   var username = target.replace('#', '')
   client.say(target, `@${username} How dare you speak to me`);
   console.log(`Spoke to ${username}`)
