@@ -4,9 +4,7 @@
   "description": "A bot that I perform evil experiments on. It's basically my Frankenstein's monster. ",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js",
-    "build": "npm i -dev && webpack --mode production",
-    "heroku-postbuild": "npm build"
+    "start": "node bot.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
