@@ -5,8 +5,8 @@
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js",
-    "build": "ng build",
-    "heroku-postbuild": "ng build --prod"
+    "build": "npm i -dev && webpack --mode production",
+    "heroku-postbuild": "npm build"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
