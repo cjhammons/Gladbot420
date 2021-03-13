@@ -3,19 +3,11 @@ const dotenv = require('dotenv');
 dotenv.config()
 const fs = require('fs')
 
+// connect to MongoDB Atlas
+const MongoClient = require('mongodb').MongoClient;
+const uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.aetew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-var copypastas = []
-try {
-  const data = fs.readFileSync('./copypasta.json')
-
-  const cp = JSON.parse(data);
-
-  for (let i in cp){
-    copypastas.push(cp[i].text)
-  }
-} catch (err){
-  console.log(`Error reading file: ${err}`);
-}
 
 // Define configuration options
 const opts = {
@@ -77,9 +69,25 @@ Posts random copypasta
 */
 function copypasta(target, commandName){
   const rand = Math.floor(Math.random() * (copypastas.length));
-  var copypasta = copypastas[rand];
-
-  client.say(target, `${copypasta}`);
+  mongoClient.connect(err => {
+    if(err) {
+      console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+    }
+    const col = mongoClient
+      .db("gladbot-responses")
+      .collection("copypastas")
+    
+    col.find({}).toArray(function(err, items) {
+      if (err) {
+        console.log('Error occured getting collection from Atlas...\n', err)
+      } else {
+        var copypasta = items[rand]["text"];
+        client.say(target, `${copypasta}`);
+      }
+      mongoClient.close();
+    });  
+  });
+//  client.say(target, `${copypasta}`);
 
   console.log(`* Executed ${commandName} command: Index ${rand}`);
 }
