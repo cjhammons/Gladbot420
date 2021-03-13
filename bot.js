@@ -3,10 +3,10 @@ const dotenv = require('dotenv');
 dotenv.config()
 const fs = require('fs')
 
-// connect to MongoDB Atlas
+// setup MongoDB Atlas
 const MongoClient = require('mongodb').MongoClient;
-const uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.aetew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const mongo_uri = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@cluster0.aetew.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+//const mongoClient = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 // Define configuration options
@@ -20,15 +20,15 @@ const opts = {
   ]
 };
 
-// Create a client with our options
-const client = new tmi.client(opts);
+// Create a twitchClient with our options
+const twitchClient = new tmi.client(opts);
 
 // Register our event handlers (defined below)
-client.on('message', onMessageHandler);
-client.on('connected', onConnectedHandler);
+twitchClient.on('message', onMessageHandler);
+twitchClient.on('connected', onConnectedHandler);
 
 // Connect to Twitch:
-client.connect();
+twitchClient.connect();
 //
 // Called every time a message comes in
 function onMessageHandler (target, context, msg, self) {
@@ -60,7 +60,7 @@ function onMessageHandler (target, context, msg, self) {
 }
 
 function code(target, commandName){
-  client.say(target, 'You can see my source code here: https://github.com/cjhammons/Gladbot420')
+  twitchClient.say(target, 'You can see my source code here: https://github.com/cjhammons/Gladbot420')
   console.log(`* Executed ${commandName} command`);
 }
 
@@ -68,9 +68,8 @@ function code(target, commandName){
 Posts random copypasta
 */
 function copypasta(target, commandName){
-  const rand = Math.floor(Math.random() * (copypastas.length));
-  mongoClient.connect(err => {
-    if(err) {
+  MongoClient.connect(mongo_uri, function(err_connect, mongoClient) {
+    if(err_connect) {
       console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
     }
     const col = mongoClient
@@ -81,15 +80,18 @@ function copypasta(target, commandName){
       if (err) {
         console.log('Error occured getting collection from Atlas...\n', err)
       } else {
+        const rand = Math.floor(Math.random() * (items.length));
         var copypasta = items[rand]["text"];
-        client.say(target, `${copypasta}`);
+        twitchClient.say(target, `${copypasta}`);
+        console.log(`* Executed ${commandName} command: Index ${rand}`);
       }
-      mongoClient.close();
-    });  
+      
+    }); 
+    mongoClient.close() 
   });
-//  client.say(target, `${copypasta}`);
+//  twitchClient.say(target, `${copypasta}`);
 
-  console.log(`* Executed ${commandName} command: Index ${rand}`);
+  
 }
 
 /*
@@ -97,7 +99,7 @@ Function called when someone @s gladbot
 */
 function dontAtMe(target, commandName){
   var username = target.replace('#', '')
-  client.say(target, `@${username} How dare you speak to me`);
+  twitchClient.say(target, `@${username} How dare you speak to me`);
   console.log(`* Executed ${commandName} command and Spoke to ${username}`)
 }
 
@@ -107,7 +109,7 @@ Function called when the "dice" command is issued
 function rollDice (target, commandName) {
   const sides = 20;
   var roll = Math.floor(Math.random() * sides) + 1;
-  client.say(target, `You rolled a ${roll}.`);
+  twitchClient.say(target, `You rolled a ${roll}.`);
   console.log(`* Executed ${commandName} command`);
 }
 
