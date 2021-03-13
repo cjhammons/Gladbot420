@@ -37,7 +37,7 @@ client.on('connected', onConnectedHandler);
 
 // Connect to Twitch:
 client.connect();
-
+//
 // Called every time a message comes in
 function onMessageHandler (target, context, msg, self) {
   try {
