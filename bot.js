@@ -36,7 +36,7 @@ function onMessageHandler (target, context, msg, self) {
     if (self ) { return; } // Ignore messages from the bot
   
     // Remove whitespace from chat message
-    const commandName = msg.trim();
+    const commandName = msg.trim().toLowerCase();
 
     // If the command is known, let's execute it
     if (commandName === '!d20') {
@@ -47,8 +47,12 @@ function onMessageHandler (target, context, msg, self) {
     } 
     else if (commandName === '!copypasta'){
       copypasta(target, commandName)
-    } else if (commandName === '!sourcecode') {
-      code(target, commandName)
+    } 
+    else if (commandName === '!sourcecode') {
+      code(target, commandName);
+    }
+    else if ((commandName.includes('among us')) || (commandName.includes('amogus'))) {
+      amongUs(target, commandName);
     }
     else {
       console.log(`* Unknown command ${commandName}`);
@@ -94,6 +98,12 @@ function copypasta(target, commandName){
   }); 
 }
 
+function amongUs(target){
+  const text = "STOP POSTING ABOUT AMONG US, I'M TIRED OF SEEING IT! My friends on TikTok send me memes, on Discord it's fucking memes, i was in a server, right? and ALL of the channels are just Among Us stuff. I-I showed my Champion underwear to my girlfriend, and the logo i flipped it and i said \"Hey babe, when the underwear sus HAHA ding ding ding ding ding ding ding\" I FUCKING LOOKED AT A TRASH CAN, I SAID \"THAT'S A BIT SUSSY\"";
+  var username = target.replace('#', '')
+  twitchClient.say(target, `@${username} ${text}`);
+  console.log(`* Executed Among Us`);
+}
 /*
 Function called when someone @s gladbot
 */
