@@ -18,3 +18,13 @@ Shares a random copypasta. These can be found in ``copypasta.json`` (some are NS
 ## !sourcecode
 
 Shares a link to this here repo. 
+
+# Other Triggers
+
+## @Gladbot420
+
+When another chatter @s gladbot, gladbot rudely responds to them with "How dare you speak to me"
+
+## Among Us/Amogus
+
+When another chatter sends a message in chat containing the words "Among Us" or "Amogus" gladbot responds with a rant about people posting about among us. 
