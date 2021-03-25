@@ -66,6 +66,9 @@ function code(target, commandName){
 
 /*
 Posts random copypasta
+
+Opens a connection to the mongoDB database and retrieves all the stored copypastas.
+It then randomly selects one and sends it in the twitch chat.
 */
 function copypasta(target, commandName){
   MongoClient.connect(mongo_uri, function(err_connect, mongoClient) {
@@ -88,10 +91,7 @@ function copypasta(target, commandName){
       
     }); 
     mongoClient.close() 
-  });
-//  twitchClient.say(target, `${copypasta}`);
-
-  
+  }); 
 }
 
 /*
