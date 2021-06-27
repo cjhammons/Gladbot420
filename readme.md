@@ -13,7 +13,7 @@ Simulates rolling a 20-sided die.
 
 ## !copypasta
 
-Shares a random copypasta. These can be found in ``copypasta.json`` (some are NSFW)
+Shares a random copypasta. Copypastas are stored in a mongoDB instance hosted on Mongo Atlas.
 
 ## !sourcecode
 
